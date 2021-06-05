@@ -85,6 +85,7 @@ class ItemLists with ChangeNotifier {
   }
 
   Future<void> removeElement(int itemId, int index) async {
+    _items[index].items!.where((el) => el.id == itemId).first.use();
     _items[index].items!.removeWhere((el) => el.id == itemId);
     await updateItem(_items[index]);
     notifyListeners();

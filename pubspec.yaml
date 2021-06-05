@@ -30,6 +30,9 @@ dependencies:
   provider: ^5.0.0 #MIT
   sqflite: ^2.0.0+3 #MIT
   shared_preferences: ^2.0.6 #BSD
+  workmanager: ^0.4.0 #MIT
+  flutter_local_notifications: ^6.0.0 #BDS
+  flutter_native_timezone: ^2.0.0 #Apache2.0
 
 dev_dependencies:
   flutter_test:

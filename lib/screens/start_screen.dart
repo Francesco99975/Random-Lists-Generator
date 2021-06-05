@@ -61,36 +61,6 @@ class _StartScreenState extends State<StartScreen> {
       // print("LISTS: ${lists[1].items!.map((e) => e.name).toList()}");
       await itemLists.generate(lists);
       itemLists.setLastUpdate(DateTime.now());
-    } else if (items.length >= (itemLists.listSize * 3) &&
-        DateTime.now().difference(itemLists.lastUpdate).inDays >= 21) {
-      List<Item> list = [];
-
-      types.forEach((type) {
-        final cluster = items
-            .where((item) => item.type!.id == type.id && item.isReady())
-            .toList();
-        if (cluster.length <= type.instances!) {
-          cluster.forEach((item) {
-            item.use();
-            list.add(item);
-          });
-        } else {
-          final tmp = cluster..shuffle();
-          final subCluster = tmp.sublist(0, type.instances);
-          // final excessCluster =
-          //     cluster.where((item) => !subCluster.contains(item));
-          // excessCluster.forEach((item) => item.elapsed());
-          subCluster.forEach((item) {
-            item.use();
-            list.add(item);
-          });
-        }
-      });
-
-      print("List ${list.map((e) => e.name).toList()}");
-
-      await itemLists.shift(new ItemList(items: list));
-      itemLists.setLastUpdate(DateTime.now());
     } else {
       print("Nothing Happened");
     }

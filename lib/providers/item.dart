@@ -47,8 +47,8 @@ class Item with ChangeNotifier {
   }
 
   use() {
-    if (this.elapsedInstances! < 0)
-      this.elapsedInstances = 1;
+    if (this.elapsedInstances! > 2)
+      this.elapsedInstances = -1;
     else
       this.elapsedInstances = this.elapsedInstances! + 1;
     DatabaseProvider.db.updateItem(id!, this);
