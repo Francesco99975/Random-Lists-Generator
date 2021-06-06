@@ -110,7 +110,7 @@ void main() async {
   await workManager.cancelAll();
 
   await workManager.registerPeriodicTask("9", "shift",
-      frequency: Duration(minutes: 15));
+      frequency: Duration(days: 7));
 
   runApp(RandomListsGenerator());
 }

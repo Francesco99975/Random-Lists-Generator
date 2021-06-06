@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.random_lists_generator">
+    package="dev.francescobarranca.random_lists_generator">
    <application
         android:label="random_lists_generator"
         android:icon="@mipmap/ic_launcher">
