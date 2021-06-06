@@ -33,6 +33,7 @@ dependencies:
   workmanager: ^0.4.0 #MIT
   flutter_local_notifications: ^6.0.0 #BDS
   flutter_native_timezone: ^2.0.0 #Apache2.0
+  fluttertoast: ^8.0.7 #MIT
 
 dev_dependencies:
   flutter_test:

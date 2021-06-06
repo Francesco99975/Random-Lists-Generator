@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:random_lists_generator/db/database_provider.dart';
-import 'package:random_lists_generator/providers/item.dart';
-import 'package:random_lists_generator/providers/item_list.dart';
 import 'package:random_lists_generator/providers/items.dart';
 import 'package:random_lists_generator/screens/select_screen.dart';
 import 'package:random_lists_generator/widgets/main_drawer.dart';
 import 'package:random_lists_generator/widgets/special_list_item.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../providers/item_lists.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Home extends StatefulWidget {
   final Function _generate;
@@ -65,6 +63,21 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     await widget._generate(context);
   }
 
+  Future<void> _copy(BuildContext context, int index) async {
+    final list =
+        Provider.of<ItemLists>(context, listen: false).itemLists[index].items;
+    final data = list!.map((item) => item.name).toList().join("\n");
+    await Clipboard.setData(ClipboardData(text: data));
+    await Fluttertoast.showToast(
+        msg: "List copied to clipboard!",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM_RIGHT,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Theme.of(context).backgroundColor,
+        textColor: Theme.of(context).primaryColor,
+        fontSize: 16.0);
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -78,48 +91,12 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             iconTheme: IconThemeData(color: Theme.of(context).accentColor),
             actions: [
               IconButton(
-                  onPressed: () async {
-                    final itemLists = await DatabaseProvider.db.getItemLists();
-                    final types = await DatabaseProvider.db.getTypes();
-                    final items = await DatabaseProvider.db.getItems();
-
-                    List<Item> list = [];
-                    types.forEach((type) {
-                      final cluster = items
-                          .where((item) =>
-                              item.type!.id == type.id && item.isReady())
-                          .toList();
-                      if (cluster.length <= type.instances!) {
-                        cluster.forEach((item) {
-                          item.use();
-                          list.add(item);
-                        });
-                      } else {
-                        final tmp = cluster..shuffle();
-                        final subCluster = tmp.sublist(0, type.instances);
-                        // final excessCluster =
-                        //     cluster.where((item) => !subCluster.contains(item));
-                        // excessCluster.forEach((item) => item.elapsed());
-                        subCluster.forEach((item) {
-                          item.use();
-                          list.add(item);
-                        });
-                      }
-                    });
-
-                    print("List ${list.map((e) => e.name).toList()}");
-
-                    await DatabaseProvider.db.deleteItemList(itemLists[0].id!);
-                    await DatabaseProvider.db
-                        .insertItemList(new ItemList(items: list));
-                    final prefs = await SharedPreferences.getInstance();
-
-                    await prefs.setInt(
-                        "lastUpdate", DateTime.now().millisecondsSinceEpoch);
-                  },
-                  icon: Icon(Icons.next_plan_outlined)),
+                  onPressed: () async =>
+                      await _copy(context, _tabController!.index),
+                  icon: Icon(Icons.copy)),
               IconButton(
-                  onPressed: () => _reset(context), icon: Icon(Icons.restore)),
+                  onPressed: () async => await _reset(context),
+                  icon: Icon(Icons.restore)),
               IconButton(
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
