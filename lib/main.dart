@@ -107,8 +107,6 @@ void main() async {
 
   await workManager.initialize(callbackDispatcher);
 
-  await workManager.cancelAll();
-
   await workManager.registerPeriodicTask("9", "shift",
       frequency: Duration(days: 7));
 
