@@ -110,7 +110,7 @@ class TypeListItem extends StatelessWidget {
                             onPressed: () async {
                               if (typeCtrl.text.trim().isNotEmpty) {
                                 await type.update(
-                                    typeCtrl.text, _instances.toInt());
+                                    typeCtrl.text.trim(), _instances.toInt());
                                 Navigator.of(context).pop(false);
                               }
                             },

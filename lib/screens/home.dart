@@ -80,6 +80,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final listsSize = Provider.of<ItemLists>(context, listen: false).size();
     return DefaultTabController(
         length: 3,
         child: Scaffold(
@@ -90,26 +91,29 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             ),
             iconTheme: IconThemeData(color: Theme.of(context).accentColor),
             actions: [
-              IconButton(
-                  onPressed: () async =>
-                      await _copy(context, _tabController!.index),
-                  icon: Icon(Icons.copy)),
-              IconButton(
-                  onPressed: () async => await _reset(context),
-                  icon: Icon(Icons.restore)),
-              IconButton(
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => SelectScreen(
-                          _tabController!.index,
-                          Provider.of<ItemLists>(context, listen: false)
-                              .itemLists[_tabController!.index]
-                              .items!
-                              .map((el) => el.id)
-                              .toList()),
-                    ));
-                  },
-                  icon: Icon(Icons.add))
+              if (listsSize > 1)
+                IconButton(
+                    onPressed: () async =>
+                        await _copy(context, _tabController!.index),
+                    icon: Icon(Icons.copy)),
+              if (listsSize > 1)
+                IconButton(
+                    onPressed: () async => await _reset(context),
+                    icon: Icon(Icons.restore)),
+              if (listsSize > 1)
+                IconButton(
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => SelectScreen(
+                            _tabController!.index,
+                            Provider.of<ItemLists>(context, listen: false)
+                                .itemLists[_tabController!.index]
+                                .items!
+                                .map((el) => el.id)
+                                .toList()),
+                      ));
+                    },
+                    icon: Icon(Icons.add))
             ],
             bottom: TabBar(
               controller: _tabController,

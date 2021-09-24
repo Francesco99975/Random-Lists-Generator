@@ -107,7 +107,7 @@ class ItemListItem extends StatelessWidget {
                             ),
                             onPressed: () async {
                               if (itemCtrl.text.trim().isNotEmpty) {
-                                await item.update(itemCtrl.text, _type);
+                                await item.update(itemCtrl.text.trim(), _type);
                                 Navigator.of(context).pop(false);
                               }
                             },

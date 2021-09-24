@@ -89,7 +89,8 @@ class _AddItemState extends State<AddItem> {
                   child: ElevatedButton(
                     onPressed: () async {
                       if (_nameCtrl.text.trim().isNotEmpty) {
-                        Item newItem = Item(name: _nameCtrl.text, type: _type);
+                        Item newItem =
+                            Item(name: _nameCtrl.text.trim(), type: _type);
 
                         await Provider.of<Items>(context, listen: false)
                             .addItem(newItem);

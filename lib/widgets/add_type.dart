@@ -74,7 +74,7 @@ class _AddTypeState extends State<AddType> {
                     onPressed: () async {
                       if (_nameCtrl.text.trim().isNotEmpty) {
                         Type newType = Type(
-                            name: _nameCtrl.text,
+                            name: _nameCtrl.text.trim(),
                             instances: _instances.toInt());
 
                         await Provider.of<Types>(context, listen: false)
